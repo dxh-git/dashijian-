@@ -20,7 +20,7 @@
         <a href="#" class="logo"><img src="images/logo02.png" alt="logo"></a>
         <div class="user_info">
             <img src="images/2.jpg" alt="person">
-            <span>欢迎&nbsp;&nbsp;李思思</span>
+            <span>欢迎&nbsp;&nbsp;游客</span>
             <b>管理员</b>
         </div>
         <!-- 左侧导航栏 -->
@@ -54,5 +54,38 @@
 
         </div>
     </div>
+    <script>
+        // 请求地址：/admin/user/info
+        // 请求方式：get
+        // 请求参数：无
+        // 返回数据：
+        // | 名称 | 类型 | 说明 |
+        // | : ------: | : ----: | ------------ |
+        // | nickname | string | 用户昵称 |
+        // | userPic | string | 用户图片地址 |
+        // 目标1 用户信息功能
+        $.ajax({
+            type: "get",
+            url: "http://localhost:8080/api/v1/admin/user/detail",
+            dataType: "json",
+            headers: {
+                AUthorization: localStorage.getItem('token')
+            },
+            success: function (response) {
+                let uerLis = response.data
+                // 把用户头像上传
+                $('.user_info img,.user_center_link img').attr('src', uerLis.userPic)
+                $('.user_info span').text(uerLis.nickname)
+            }
+        });
+       // 目标2 用户退出功能 - 删除本地存储中的 token，并跳转回登录页
+       $(".logout").click(function (e) { 
+           e.preventDefault();
+           localStorage.removeItem("token")
+          location.href = "./login.html"
+           
+       });
+    </script>
 </body>
+
 </html>
